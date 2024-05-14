@@ -15,23 +15,23 @@ This script provides a dynamic NPC interaction system with configurable settings
 ## Installation Guide
 
 1. **Clone the Repository**
-    \`\`\`sh
+    ```sh
     git clone https://github.com/yourusername/npc-interaction-system.git
-    \`\`\`
+    ```
 
 2. **Navigate to the Directory**
-    \`\`\`sh
+    ```sh
     cd npc-interaction-system
-    \`\`\`
+    ```
 
 3. **Install Dependencies**
-    Make sure you have the required dependencies installed, such as `es_extended`, [\`ox_target\`](https://github.com/overextended/ox_target), and [\`interact\`](https://github.com/darktrovx/interact).
+    Make sure you have the required dependencies installed, such as [\`es_extended\`](https://github.com/esx-framework/es_extended), [\`ox_target\`](https://github.com/overextended/ox_target), and [\`interact\`](https://github.com/darktrovx/interact).
 
 4. **Add the Resource to Your Server**
     Add the following line to your server configuration file (e.g., `server.cfg`):
-    \`\`\`plaintext
+    ```plaintext
     ensure npc-interaction-system
-    \`\`\`
+    ```
 
 5. **Start Your Server**
     Restart your server to apply the changes.
@@ -41,7 +41,7 @@ This script provides a dynamic NPC interaction system with configurable settings
 ### Shared Configuration
 You can configure NPC settings in the `shared.lua` file:
 
-\`\`\`lua
+```lua
 -- Example shared.lua configuration
 Config = {}
 
@@ -59,9 +59,10 @@ Config.NPCs = {
     },
     -- Add more NPCs as needed
 }
-\`\`\`
+```
 
 ### Dependencies
+- [\`es_extended\`](https://github.com/esx-framework/es_extended)
 - [\`ox_target\`](https://github.com/overextended/ox_target)
 - [\`interact\`](https://github.com/darktrovx/interact)
 
