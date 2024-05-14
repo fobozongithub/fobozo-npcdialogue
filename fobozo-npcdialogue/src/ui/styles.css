@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css?family=Tajawal:300&display=swap&subset=arabic');
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Tajawal";
+    font-weight: 600;
+    color: #d2d2d5;
+    background-image: url('https://dunb17ur4ymx4.cloudfront.net/wysiwyg/982601/98382b6e1bd8ba6ca094e2a0871f531808da4fd2.jpg');
+    position: relative; /* Added */
+    overflow: hidden; /* Added to prevent scrollbars due to pseudo-element */
+}
+
+.dialogue-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 320px;
+    background: linear-gradient(158deg, rgba(31, 69, 91, 255) 0%, rgba(68, 58, 41, 255) 100%);
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    border-right: 1px solid #303030;
+    animation: slideInFadeIn 0.5s ease forwards;
+}
+
+.dialogue-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    left: 5px;
+    border: 2px solid rgb(83, 83, 83); /* Inner white border */
+    pointer-events: none; /* Ensure the border does not block any interactions */
+    box-sizing: border-box;
+}
+
+@keyframes slideInFadeIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.header-section {
+    margin-bottom: 20px;
+}
+
+.dialogue-title {
+    font-size: 22px;
+    color: #00f8b9;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px #00f8bac1, 0 0 20px #00f8ba66, 0 0 30px #00f8ba83, 0 0 40px #00f8ba80;
+}
+
+.rep-wrapper,
+.position-wrapper {
+    background-color: rgba(0, 248, 186, 0.193);
+    padding: 2px 6px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 0px;
+}
+
+.rep-wrapper {
+    margin-bottom: 10px; /* Adjusted */
+}
+
+
+.rep-text,
+.position-text {
+    font-size: 11px;
+    color: #00f8b9;
+    margin: 0;
+}
+
+.content-wrapper {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.content-wrapper .dialogue-title,
+.content-wrapper .position-wrapper {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.position-text p {
+    margin: 0;
+}
+
+.dialogue-content {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.button-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+}
+
+.action-button {
+    border: 1px solid #444444;
+    background: transparent;
+    color: #00f8b9;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 3px;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-button span {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.action-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: rgba(0, 248, 186, 0.3);
+    transition: width 0.3s;
+    z-index: -1;
+}
+
+.action-button:hover::before {
+    width: 100%;
+}
+
+.action-button:hover {
+    background: transparent;
+    color: #00f8b9;
+}
+
+.action-button:hover span {
+    color: #fff;
+}
+
+@media only screen and (min-height: 1440px) and (min-width: 2560px) {
+    .dialogue-wrapper {
+        width: 25%;
+        color: white;
+    }
+
+    .rep-wrapper,
+    .position-wrapper {
+        background-color: rgba(0, 248, 186, 0.193);
+        padding: 4px 8px;
+        border-radius: 2px;
+        display: inline-block;
+        margin-bottom: 0px;
+    }
+
+    .rep-text,
+    .position-text {
+        font-size: 20px;
+        color: #00f8b9;
+        margin: 0;
+    }
+
+    .dialogue-title {
+        font-size: 42px;
+        color: #00f8b9;
+        margin-bottom: 5px;
+        text-shadow: 0 0 10px #00f8bac1, 0 0 20px #00f8ba66, 0 0 30px #00f8ba83, 0 0 40px #00f8ba80;
+    }
+
+    .dialogue-content {
+        background: rgba(255, 255, 255, 0.3);
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 22px;
+        line-height: 1.6;
+    }
+
+    .action-button {
+        padding: 12px;
+        font-size: 24px;
+    }
+
+    .action-button span {
+        left: 20px;
+    }
+}
