@@ -16,12 +16,12 @@ This script provides a dynamic NPC interaction system with configurable settings
 
 1. **Clone the Repository**
     ```sh
-    git clone https://github.com/fobozongithub/fobozo-npcdialog.git
+    git clone https://github.com/fobozongithub/fobozo-npcdialogue.git
     ```
 
 2. **Navigate to the Directory**
     ```sh
-    cd npc-interaction-system
+    cd fobozo-npcdialogue
     ```
 
 3. **Install Dependencies**
