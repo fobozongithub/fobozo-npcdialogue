@@ -13,7 +13,7 @@ This script provides a dynamic NPC interaction system with configurable settings
 
 For any questions, feedback, or assistance with using the NPC Interaction System, you can join our Discord server:
 
-[![Discord](https://img.shields.io/discord/123456789012345678?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sduemEDFq4)
+[![Discord](https://img.shields.io/discord/1131142366204530769?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sduemEDFq4)
 
 ## Preview
 ![NPC Interaction UI](https://media.discordapp.net/attachments/1187316503872274472/1239898391996272660/fobozo-npcdialogue.gif?ex=664498dc&is=6643475c&hm=3217b74918bc9ebd77e6f8597c9d55963e5ba7772f7f1ef28be437ae4cfe999f&=&width=787&height=662)
