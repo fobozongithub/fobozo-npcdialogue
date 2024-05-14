@@ -5,7 +5,7 @@ name "fobozo-npcdialogue"
 author "@fobozo"
 version "1.0.0"
 
-ui_page "ui/index.html"
+ui_page "src/ui/index.html"
 files { "src/ui/**/**" }
 
 shared_scripts { 'shared/*.lua' }

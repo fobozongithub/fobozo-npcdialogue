@@ -8,9 +8,8 @@ html {
     font-family: "Tajawal";
     font-weight: 600;
     color: #d2d2d5;
-    background-image: url('https://dunb17ur4ymx4.cloudfront.net/wysiwyg/982601/98382b6e1bd8ba6ca094e2a0871f531808da4fd2.jpg');
-    position: relative; /* Added */
-    overflow: hidden; /* Added to prevent scrollbars due to pseudo-element */
+    position: relative;
+    overflow: hidden;
 }
 
 .dialogue-wrapper {
@@ -21,10 +20,10 @@ html {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 320px;
+    width: 480px;
     background: linear-gradient(158deg, rgba(31, 69, 91, 255) 0%, rgba(68, 58, 41, 255) 100%);
     color: white;
-    padding: 20px;
+    padding: 30px;
     box-sizing: border-box;
     border-right: 1px solid #303030;
     animation: slideInFadeIn 0.5s ease forwards;
@@ -33,12 +32,12 @@ html {
 .dialogue-wrapper::before {
     content: "";
     position: absolute;
-    top: 5px;
-    right: 5px;
-    bottom: 5px;
-    left: 5px;
-    border: 2px solid rgb(83, 83, 83); /* Inner white border */
-    pointer-events: none; /* Ensure the border does not block any interactions */
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    border: 2px solid rgba(83, 83, 83, 0.7);
+    pointer-events: none;
     box-sizing: border-box;
 }
 
@@ -54,12 +53,24 @@ html {
     }
 }
 
+@keyframes slideOutFadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
 .header-section {
     margin-bottom: 20px;
 }
 
 .dialogue-title {
-    font-size: 22px;
+    font-size: 26px;
     color: #00f8b9;
     margin-bottom: 5px;
     text-shadow: 0 0 10px #00f8bac1, 0 0 20px #00f8ba66, 0 0 30px #00f8ba83, 0 0 40px #00f8ba80;
@@ -68,20 +79,15 @@ html {
 .rep-wrapper,
 .position-wrapper {
     background-color: rgba(0, 248, 186, 0.193);
-    padding: 2px 6px;
-    border-radius: 2px;
+    padding: 4px 8px;
+    border-radius: 4px;
     display: inline-block;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
 }
-
-.rep-wrapper {
-    margin-bottom: 10px; /* Adjusted */
-}
-
 
 .rep-text,
 .position-text {
-    font-size: 11px;
+    font-size: 14px;
     color: #00f8b9;
     margin: 0;
 }
@@ -104,34 +110,37 @@ html {
 }
 
 .dialogue-content {
-    background: rgba(255, 255, 255, 0.3);
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    line-height: 1.6;
+    background: rgba(31, 69, 91, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-left: 4px solid #00f8b9;
 }
 
 .button-group {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 15px;
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    bottom: 30px;
+    left: 30px;
+    right: 30px;
 }
 
 .action-button {
-    border: 1px solid #444444;
+    border: 1px solid #00f8ba8f;
     background: transparent;
     color: #00f8b9;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s;
-    border-radius: 3px;
-    font-size: 14px;
+    border-radius: 4px;
+    font-size: 16px;
     position: relative;
     overflow: hidden;
 }
@@ -199,11 +208,11 @@ html {
 
     .dialogue-content {
         background: rgba(255, 255, 255, 0.3);
-        padding: 15px;
+        padding: 20px;
         border-radius: 5px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         font-size: 22px;
-        line-height: 1.6;
+        line-height: 1.8;
     }
 
     .action-button {

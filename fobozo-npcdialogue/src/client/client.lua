@@ -39,7 +39,7 @@ end
 
 FOBOZO.Functions.AddInteraction = function(npc, npcPed)
     if Shared.interact == 'ox_target' then
-        exports['ox_target']:AddLocalEntity(npcPed, {
+        exports.ox_target:addLocalEntity(npcPed, {
             {
                 name = npc.name,
                 label = npc.name,
@@ -121,4 +121,8 @@ RegisterNetEvent('fobozo-npcdialogue:updateRep', function(newRep)
         type = 'updateRep',
         rep = newRep
     })
+end)
+
+RegisterNetEvent('fobozo:print', function()
+    print('test event')
 end)

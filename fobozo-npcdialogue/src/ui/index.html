@@ -5,22 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>made by @fobozo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href='https://fonts.googleapis.com/css?family=Tajawal:300&display=swap&subset=arabic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body>
+<body style="display: none;">
     <div class="dialogue-wrapper" id="dialogue-wrapper">
         <div class="header-section">
             <div class="dialogue-title" id="npc-name">Mitch Bun</div>
             <div class="rep-wrapper">
-                <p class="rep-text">400 REP</p>
+                <p class="rep-text">0 REP</p>
             </div>
             <div class="content-wrapper">
-                <div class="dialogue-title">Mitch Bun</div>
+                <div class="dialogue-title" id="npc-inner-title">Mitch Bun</div>
                 <div class="position-wrapper">
-                    <p class="position-text" id="npc-job">Sr. Bun Medewerker</p>
+                    <p class="position-text" id="npc-job">Sr. Bun Worker</p>
                 </div>
             </div>
             <div class="dialogue-content" id="npc-text">
@@ -28,9 +28,10 @@
             </div>
         </div>
         <div class="button-group" id="button-group">
-            <button class="action-button" id="button-text-1"><span>1</span> Clock In/Out</button>
-            <button class="action-button" id="button-text-2"><span>2</span> Change Clothes</button>
-            <button class="action-button" id="button-text-3"><span>3</span> Leave Conversation</button>
+            <button class="action-button" id="button-text-1"><span>1</span> Option</button>
+            <button class="action-button" id="button-text-2"><span>2</span> Option</button>
+            <button class="action-button" id="button-text-3"><span>3</span> Option</button>
+            <button class="action-button" id="button-text-4"><span>4</span> Option</button>
         </div>
     </div>
     <script src="javascript.js"></script>

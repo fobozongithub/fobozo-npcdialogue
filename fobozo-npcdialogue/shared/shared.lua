@@ -1,6 +1,6 @@
 Shared = {}
 
-Shared.interact = 'ox_target' -- or 'interact'
+Shared.interact = 'interact' -- 'ox_target' or 'interact'
 Shared.ReputationCommand = 'setReputation'
 
 Shared.npcs = {
@@ -9,7 +9,7 @@ Shared.npcs = {
         text = "Hello, do you want to start or end your shift?",
         job = "Burger Shot Employee",
         ped = "csb_burgerdrug",
-        coords = vector4(-1191.25, -900.46, 12.98, 311.28),
+        coords = vector4(-1173.4746, -882.8961, 13.0092, 32.2758),
         ox_target = {
             icon = 'fas fa-comments',
             distance = 7.5
@@ -21,19 +21,19 @@ Shared.npcs = {
         options = {
             {
                 label = "Clock In/Out",
-                event = "menu-iRender:clockInOut", 
+                event = "fobozo:print", 
                 type = "client", 
                 args = {'clock'} 
             },
             {
                 label = "Change Clothes",
-                event = "menu-iRender:changeClothes", 
+                event = "fobozo:print", 
                 type = "client", 
                 args = {'uniform'} 
             },
             {
                 label = "Leave Conversation",
-                event = "fobozo-npcdialogue:hideMenu", 
+                event = "fobozo:print", 
                 type = "client", 
                 args = {} 
             },
