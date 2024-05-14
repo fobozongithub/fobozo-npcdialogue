@@ -25,7 +25,7 @@ This script provides a dynamic NPC interaction system with configurable settings
     ```
 
 3. **Install Dependencies**
-    Make sure you have the required dependencies installed, such as [\`es_extended\`](https://github.com/esx-framework/es_extended), [\`ox_target\`](https://github.com/overextended/ox_target), and [\`interact\`](https://github.com/darktrovx/interact).
+    Make sure you have the required dependencies installed, such as [es_extended](https://github.com/esx-framework/es_extended), [ox_target](https://github.com/overextended/ox_target), and [interact](https://github.com/darktrovx/interact).
 
 4. **Add the Resource to Your Server**
     Add the following line to your server configuration file (e.g., `server.cfg`):
@@ -42,29 +42,54 @@ This script provides a dynamic NPC interaction system with configurable settings
 You can configure NPC settings in the `shared.lua` file:
 
 ```lua
--- Example shared.lua configuration
-Config = {}
+Shared = {}
 
-Config.NPCs = {
+Shared.interact = 'ox_target' -- or 'interact'
+Shared.ReputationCommand = 'setReputation'
+
+Shared.npcs = {
     {
-        name = "John Doe",
-        model = "a_m_m_business_01",
-        coords = vector3(-42.4, -1097.2, 26.4),
-        heading = 337.0,
-        dialogue = "Hello there! How can I assist you today?",
-        commands = {
-            {label = "Buy Items", event = "npc:buyItems"},
-            {label = "Sell Items", event = "npc:sellItems"},
+        name = "Abu Salman",
+        text = "Hello, do you want to start or end your shift?",
+        job = "Burger Shot Employee",
+        ped = "csb_burgerdrug",
+        coords = vector4(-1191.25, -900.46, 12.98, 311.28),
+        ox_target = {
+            icon = 'fas fa-comments',
+            distance = 7.5
+        },
+        interact = {
+            distance = 7.5,
+            interactDst = 5
+        },
+        options = {
+            {
+                label = "Clock In/Out",
+                event = "menu-iRender:clockInOut", 
+                type = "client", 
+                args = {'clock'} 
+            },
+            {
+                label = "Change Clothes",
+                event = "menu-iRender:changeClothes", 
+                type = "client", 
+                args = {'uniform'} 
+            },
+            {
+                label = "Leave Conversation",
+                event = "fobozo-npcdialogue:hideMenu", 
+                type = "client", 
+                args = {} 
+            },
         }
     },
-    -- Add more NPCs as needed
 }
 ```
 
 ### Dependencies
-- [\`es_extended\`](https://github.com/esx-framework/es_extended)
-- [\`ox_target\`](https://github.com/overextended/ox_target)
-- [\`interact\`](https://github.com/darktrovx/interact)
+- [es_extended](https://github.com/esx-framework/es_extended)
+- [ox_target](https://github.com/overextended/ox_target)
+- [interact](https://github.com/darktrovx/interact)
 
 Ensure that you have these dependencies installed and configured properly for the NPC Interaction System to work seamlessly.
 
