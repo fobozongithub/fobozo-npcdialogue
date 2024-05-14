@@ -31,10 +31,25 @@ FOBOZO.Functions.DestroyCamera = function()
     DestroyCam(cam, false)
 end
 
-FOBOZO.Functions.DisplayHelpText = function(text)
-    SetTextComponentFormat("STRING")
-    AddTextComponentString(text)
-    DisplayHelpTextFromStringLabel(0, 0, 1, -1)
+FOBOZO.Functions.GetPlayerJob = function()
+    local playerJob = nil
+
+    if GetResourceState('es_extended') == 'started' then
+        local ESX = exports['es_extended']:getSharedObject()
+        while not ESX do
+            Citizen.Wait(100)
+        end
+        playerJob = ESX.GetPlayerData().job.name
+    elseif GetResourceState('qb-core') == 'started' then
+        local QBCore = exports['qb-core']:GetCoreObject()
+        while not QBCore do
+            Citizen.Wait(100)
+        end
+        local Player = QBCore.Functions.GetPlayerData()
+        playerJob = Player.job.name
+    end
+
+    return playerJob
 end
 
 FOBOZO.Functions.AddInteraction = function(npc, npcPed)
@@ -43,11 +58,16 @@ FOBOZO.Functions.AddInteraction = function(npc, npcPed)
             {
                 name = npc.name,
                 label = npc.name,
-                icon = npc.ox_target.icon or 'fas fa-comments',
-                distance = npc.ox_target.distance or 7.5,
+                icon = npc.interaction.ox_target.icon or 'fas fa-comments',
+                distance = npc.interaction.ox_target.distance or 7.5,
                 onSelect = function()
-                    TriggerEvent("fobozo-npcdialogue:showMenu", npc)
-                    SetNuiFocus(true, true)
+                    local playerJob = FOBOZO.Functions.GetPlayerJob()
+                    if npc.job.required == "" or playerJob == npc.job.required then
+                        TriggerEvent("fobozo-npcdialogue:showMenu", npc)
+                        SetNuiFocus(true, true)
+                    else
+                        print("You cannot interact with this NPC.")
+                    end
                 end
             }
         })
@@ -59,19 +79,24 @@ FOBOZO.Functions.AddInteraction = function(npc, npcPed)
                 {
                     label = npc.name,
                     action = function(entity)
-                        TriggerEvent("fobozo-npcdialogue:showMenu", npc)
-                        SetNuiFocus(true, true)
+                        local playerJob = FOBOZO.Functions.GetPlayerJob()
+                        if npc.job.required == "" or playerJob == npc.job.required then
+                            TriggerEvent("fobozo-npcdialogue:showMenu", npc)
+                            SetNuiFocus(true, true)
+                        else
+                            print("You cannot interact with this NPC.")
+                        end
                     end,
                 }
             },
-            distance = npc.interact.distance or 7.5,
-            interactDst = npc.interact.interactDst or 5
+            distance = npc.interaction.default.distance or 7.5,
+            interactDst = npc.interaction.default.interactDst or 5
         })
     end
 end
 
 Citizen.CreateThread(function()
-    for _, npc in ipairs(Shared.npcs) do
+    for _, npc in ipairs(Shared.DialoguePeds) do
         RequestModel(GetHashKey(npc.ped))
         while not HasModelLoaded(GetHashKey(npc.ped)) do
             Wait(500)
@@ -92,7 +117,7 @@ RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
         options = npc.options,
         name = npc.name,
         text = npc.text,
-        job = npc.job
+        job = npc.job.title
     })
     FOBOZO.Functions.CamCreate(npc.coords)
 end)
@@ -114,7 +139,7 @@ RegisterNUICallback("fobozo-npcdialogue:process", function(data)
     FOBOZO.Functions.DestroyCamera()
 end)
 
--- // HARDCODED REPUTATION SYSTEM, RECOMMENDED TO MAKE UR OWN SYSTEM \\ --
+-- // HARDCODED REPUTATION SYSTEM, RECOMMENDED TO MAKE YOUR OWN SYSTEM \\ --
 
 RegisterNetEvent('fobozo-npcdialogue:updateRep', function(newRep)
     SendNUIMessage({
