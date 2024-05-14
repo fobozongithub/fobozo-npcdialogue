@@ -16,7 +16,7 @@ This script provides a dynamic NPC interaction system with configurable settings
 
 1. **Clone the Repository**
     ```sh
-    git clone https://github.com/yourusername/npc-interaction-system.git
+    git clone https://github.com/fobozongithub/fobozo-npcdialog.git
     ```
 
 2. **Navigate to the Directory**
@@ -25,16 +25,16 @@ This script provides a dynamic NPC interaction system with configurable settings
     ```
 
 3. **Install Dependencies**
-    Make sure you have the required dependencies installed, such as [es_extended](https://github.com/esx-framework/es_extended), [ox_target](https://github.com/overextended/ox_target), and [interact](https://github.com/darktrovx/interact).
+    Make sure you have the required dependencies installed, such as [es_extended](https://github.com/esx-framework/es_extended), [ox_target](https://github.com/overextended/ox_target), or [interact](https://github.com/darktrovx/interact).
 
 4. **Add the Resource to Your Server**
     Add the following line to your server configuration file (e.g., `server.cfg`):
     ```plaintext
-    ensure npc-interaction-system
+    ensure fobozo-npcdialogue
     ```
 
 5. **Start Your Server**
-    Restart your server to apply the changes.
+    Restart your server or ensure the resource to apply the changes.
 
 ## Configuration
 
@@ -88,8 +88,7 @@ Shared.npcs = {
 
 ### Dependencies
 - [es_extended](https://github.com/esx-framework/es_extended)
-- [ox_target](https://github.com/overextended/ox_target)
-- [interact](https://github.com/darktrovx/interact)
+- [ox_target](https://github.com/overextended/ox_target) or [interact](https://github.com/darktrovx/interact)
 
 Ensure that you have these dependencies installed and configured properly for the NPC Interaction System to work seamlessly.
 
