@@ -201,3 +201,6 @@ Shared.DialoguePeds = {
 Ensure that you have these dependencies installed and configured properly for the NPC Interaction System to work seamlessly.
 
 By following the installation and configuration guide, you will have a fully functional NPC interaction system integrated into your role-playing environment. Customize the NPCs and dialogues to fit your server's theme and provide an engaging experience for your players.
+
+## Credits
+This project makes use of the [NS-NPCDialogue](https://github.com/Nexus-Fivem/ns-npcdialogue?tab=MIT-1-ov-file) system, created by Nexus-Fivem. Special thanks to the contributors of this project for their efforts and dedication.
