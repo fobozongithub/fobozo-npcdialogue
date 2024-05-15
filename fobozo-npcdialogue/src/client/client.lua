@@ -139,6 +139,34 @@ RegisterNUICallback("fobozo-npcdialogue:process", function(data)
     FOBOZO.Functions.DestroyCamera()
 end)
 
+-- // [EXPORTS] \\ --
+exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, x, y, z, w, text, interaction, options)
+    local npc = {
+        name = pedName,
+        ped = pedModel,
+        job = {
+            title = jobTitle,
+            required = jobRequired
+        },
+        coords = vector4(x, y, z, w),
+        text = text,
+        interaction = interaction,
+        options = options
+    }
+
+    RequestModel(GetHashKey(npc.ped))
+    while not HasModelLoaded(GetHashKey(npc.ped)) do
+        Wait(500)
+    end
+
+    local npcPed = CreatePed(4, GetHashKey(npc.ped), npc.coords.x, npc.coords.y, npc.coords.z, npc.coords.w, false, false)
+    FreezeEntityPosition(npcPed, true)
+    SetEntityInvincible(npcPed, true)
+    SetBlockingOfNonTemporaryEvents(npcPed, true)
+    
+    FOBOZO.Functions.AddInteraction(npc, npcPed)
+end)
+
 -- // HARDCODED REPUTATION SYSTEM, RECOMMENDED TO MAKE YOUR OWN SYSTEM \\ --
 
 RegisterNetEvent('fobozo-npcdialogue:updateRep', function(newRep)
