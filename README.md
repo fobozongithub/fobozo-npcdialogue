@@ -16,7 +16,7 @@ For any questions, feedback, or assistance with using the NPC Interaction System
 [![Discord](https://img.shields.io/discord/1131142366204530769?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/9wsVqqgCVz)
 
 ## Preview
-![NPC Interaction UI](https://media.discordapp.net/attachments/1187316503872274472/1239968179778748536/image.png?ex=6644d9db&is=6643885b&hm=ad3ff28c571d9580ba4f5bc1912806487dddcb09451ec89a75e99e7d5e4f189e&=&format=webp&quality=lossless&width=1618&height=910)
+![NPC Interaction UI](https://media.discordapp.net/attachments/1239968782890434684/1240263972389785620/image.png?ex=6645ed56&is=66449bd6&hm=a6651fd47552bd14899c9640f743b16e5602fc45157785f84fcaebd670182af7&=&format=webp&quality=lossless&width=1387&height=662)
 
 ## Installation Guide
 
