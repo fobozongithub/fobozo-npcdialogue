@@ -35,10 +35,10 @@ function updateButtons(options) {
 
             var body = document.body;
             body.style.animation = 'slideOutFadeOut 0.5s ease forwards';
-            $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:hideMenu`); // Immediately call hideMenu
+            $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:hideMenu`);
             setTimeout(function () {
                 body.style.display = 'none';
-                body.style.animation = ''; // Reset animation
+                body.style.animation = '';
             }, 500);
         };
         buttonGroup.appendChild(button);

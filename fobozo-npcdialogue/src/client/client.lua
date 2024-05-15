@@ -140,6 +140,7 @@ RegisterNUICallback("fobozo-npcdialogue:process", function(data)
 end)
 
 -- // [EXPORTS] \\ --
+
 exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, x, y, z, w, text, interaction, options)
     local npc = {
         name = pedName,
