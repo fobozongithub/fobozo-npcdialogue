@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +8,12 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
 <body style="display: none;">
     <div class="dialogue-wrapper" id="dialogue-wrapper">
         <div class="header-section">
             <div class="dialogue-title" id="npc-name">Daniel Armstrong</div>
             <div class="rep-wrapper">
-                <p class="rep-text">0 REP</p>
+                <p class="rep-text" id="npc-rep">0 REP</p>
             </div>
             <div class="content-wrapper">
                 <div class="dialogue-title" id="npc-inner-title">Daniel Armstrong</div>
@@ -30,10 +28,9 @@
         <div class="button-group" id="button-group">
             <button class="action-button" id="button-text-1"><span>1</span> Sign In/Out</button>
             <button class="action-button" id="button-text-2"><span>2</span> Change Clothes</button>
-            <button class="action-button" id="button-text-2"><span>3</span> Leave Conversation</button>
+            <button class="action-button" id="button-text-3"><span>3</span> Leave Conversation</button>
         </div>
     </div>
     <script src="javascript.js"></script>
 </body>
-
 </html>

@@ -136,9 +136,6 @@ html {
     text-shadow: 0 .37037vh 2.59259vh rgba(0, 248, 185, .55)
 }
 
-
-
-
 .button-group {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -165,12 +162,12 @@ html {
     transition: background 0.3s, color 0.3s;
     border: 1px solid rgba(0, 248, 186, 0.193);
     box-shadow: none;
-    padding-left: 50px; 
+    padding-left: 50px;
 }
 
 .action-button span {
     position: absolute;
-    left: 10px; 
+    left: 10px;
     background: #1b453b;
     padding: 4px 8px;
     border-radius: 4px;

@@ -1,4 +1,5 @@
 local FOBOZO = { Functions = {} }
+local playerReputation = 0
 
 FOBOZO.Functions.GetOffsetFromCoordsAndHeading = function(coords, heading, offsetX, offsetY, offsetZ)
     local headingRad = math.rad(heading)
@@ -63,7 +64,7 @@ FOBOZO.Functions.AddInteraction = function(npc, npcPed)
                 onSelect = function()
                     local playerJob = FOBOZO.Functions.GetPlayerJob()
                     if npc.job.required == "" or playerJob == npc.job.required then
-                        TriggerEvent("fobozo-npcdialogue:showMenu", npc)
+                        TriggerEvent("fobozo-npcdialogue:showMenu", npc, playerReputation)
                         SetNuiFocus(true, true)
                     else
                         print("You cannot interact with this NPC.")
@@ -81,7 +82,7 @@ FOBOZO.Functions.AddInteraction = function(npc, npcPed)
                     action = function(entity)
                         local playerJob = FOBOZO.Functions.GetPlayerJob()
                         if npc.job.required == "" or playerJob == npc.job.required then
-                            TriggerEvent("fobozo-npcdialogue:showMenu", npc)
+                            TriggerEvent("fobozo-npcdialogue:showMenu", npc, playerReputation)
                             SetNuiFocus(true, true)
                         else
                             print("You cannot interact with this NPC.")
@@ -117,9 +118,18 @@ RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
         options = npc.options,
         name = npc.name,
         text = npc.text,
-        job = npc.job.title
+        job = npc.job.title,
+        rep = playerReputation
     })
     FOBOZO.Functions.CamCreate(npc.coords)
+end)
+
+RegisterNetEvent('fobozo-npcdialogue:updateRep', function(newRep)
+    playerReputation = newRep
+    SendNUIMessage({
+        type = 'updateRep',
+        rep = newRep
+    })
 end)
 
 RegisterNUICallback("fobozo-npcdialogue:hideMenu", function()
@@ -168,14 +178,7 @@ exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, 
     FOBOZO.Functions.AddInteraction(npc, npcPed)
 end)
 
--- // HARDCODED REPUTATION SYSTEM, RECOMMENDED TO MAKE YOUR OWN SYSTEM \\ --
-
-RegisterNetEvent('fobozo-npcdialogue:updateRep', function(newRep)
-    SendNUIMessage({
-        type = 'updateRep',
-        rep = newRep
-    })
-end)
+-- // HARDCODED, RECOMMENDED TO MAKE YOUR OWN SYSTEM \\ --
 
 RegisterNetEvent('fobozo:print', function()
     print('test event')

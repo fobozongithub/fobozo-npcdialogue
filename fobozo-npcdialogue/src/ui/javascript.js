@@ -22,7 +22,7 @@ function updateButtons(options) {
         const option = options[i];
         const button = document.createElement('button');
         button.className = 'action-button';
-        button.innerHTML = `<div class="button-number" id="button-${i + 1}">${i + 1}</div>${option.label}`;
+        button.innerHTML = `<span>${i + 1}</span> ${option.label}`;
         button.onclick = function () {
             $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:process`, JSON.stringify({
                 event: option.event,
@@ -61,12 +61,14 @@ window.addEventListener('message', function (event) {
         const nameElement = document.getElementById("npc-name");
         nameElement.innerHTML = `<b>${event.data.name.split(' ')[0]}</b> ${event.data.name.split(' ')[1]}`;
         const innerTitleElement = document.querySelector(".content-wrapper .dialogue-title");
-        innerTitleElement.innerText = event.data.name; // Update inner title
+        innerTitleElement.innerText = event.data.name;
 
         const textElement = document.getElementById("npc-text");
         textElement.innerHTML = `<div class="triangle-element"></div>${event.data.text}`;
         const jobElement = document.getElementById("npc-job");
         jobElement.innerText = event.data.job;
+        const repElement = document.getElementById("npc-rep");
+        repElement.innerText = `${event.data.rep} REP`;
 
         body.style.animation = 'slideInFadeIn 0.5s ease forwards';
         body.style.display = 'block';

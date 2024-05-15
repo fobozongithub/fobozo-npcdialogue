@@ -1,5 +1,5 @@
 RegisterCommand(Shared.ReputationCommand, function(source, args, rawCommand)
-    local newRep = args[1]
+    local newRep = tonumber(args[1])
     if newRep then
         TriggerClientEvent('fobozo-npcdialogue:updateRep', source, newRep)
     else
