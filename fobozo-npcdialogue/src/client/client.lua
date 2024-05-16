@@ -123,34 +123,28 @@ end)
 
 RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
     local pedModel = npc.ped
+    local npcActions = npc.actions or Shared.Actions -- Use custom actions if provided, otherwise fall back to Shared.Actions
+    
+    local callback = function(rep)
+        playerReputation = rep
+        SendNUIMessage({
+            type = "dialog",
+            options = npc.options,
+            name = npc.name,
+            text = npc.text,
+            job = npc.job.title,
+            rep = playerReputation
+        })
+        FOBOZO.Functions.CamCreate(npc.coords)
+    end
+
     if ESX then
-        ESX.TriggerServerCallback('fobozo-npcdialogue:getRep', function(rep)
-            playerReputation = rep
-            SendNUIMessage({
-                type = "dialog",
-                options = npc.options,
-                name = npc.name,
-                text = npc.text,
-                job = npc.job.title,
-                rep = playerReputation
-            })
-            FOBOZO.Functions.CamCreate(npc.coords)
-        end, pedModel)
+        ESX.TriggerServerCallback('fobozo-npcdialogue:getRep', callback, pedModel)
     elseif QBCore then
-        QBCore.Functions.TriggerCallback('fobozo-npcdialogue:getRep', function(rep)
-            playerReputation = rep
-            SendNUIMessage({
-                type = "dialog",
-                options = npc.options,
-                name = npc.name,
-                text = npc.text,
-                job = npc.job.title,
-                rep = playerReputation
-            })
-            FOBOZO.Functions.CamCreate(npc.coords)
-        end, pedModel)
+        QBCore.Functions.TriggerCallback('fobozo-npcdialogue:getRep', callback, pedModel)
     end
 end)
+
 
 RegisterNetEvent('fobozo-npcdialogue:setRep')
 AddEventHandler('fobozo-npcdialogue:setRep', function(rep)
@@ -197,7 +191,7 @@ end)
 
 -- // [EXPORTS] \\ --
 
-exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, x, y, z, w, text, interaction, options)
+exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, x, y, z, w, text, interaction, options, customActions)
     local npc = {
         name = pedName,
         ped = pedModel,
@@ -208,7 +202,8 @@ exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, 
         coords = vector4(x, y, z, w),
         text = text,
         interaction = interaction,
-        options = options
+        options = options,
+        actions = customActions
     }
 
     RequestModel(GetHashKey(npc.ped))
