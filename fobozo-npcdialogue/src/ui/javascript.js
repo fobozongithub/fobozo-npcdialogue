@@ -18,12 +18,15 @@ function updateButtons(options) {
         return;
     }
 
+    console.log("Options to display:", options); // Debug print
+
     const playerRep = parseInt(document.querySelector('.rep-text').innerText.split(' ')[0]);
     let visibleOptions = 0;
 
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
-        if (playerRep >= option.repRequired) {
+        console.log("Processing option:", option); // Debug print
+        if (playerRep >= (option.repRequired || 0)) {
             visibleOptions++;
             const button = document.createElement('button');
             button.className = 'action-button';
@@ -60,10 +63,11 @@ function hideButtons() {
     buttonGroup.innerHTML = '';
 }
 
-
 window.addEventListener('message', function (event) {
     const body = document.body;
     if (event.data.type === 'dialog') {
+        console.log("Dialog Data Received:", event.data); // Debug print
+
         updateButtons(event.data.options);
         const nameElement = document.getElementById("npc-name");
         nameElement.innerHTML = `<b>${event.data.name.split(' ')[0]}</b> ${event.data.name.split(' ')[1]}`;

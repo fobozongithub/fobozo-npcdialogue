@@ -214,9 +214,12 @@ exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, 
     FreezeEntityPosition(npcPed, true)
     SetEntityInvincible(npcPed, true)
     SetBlockingOfNonTemporaryEvents(npcPed, true)
-    
+
+    print(json.encode(npc)) -- Debug print to verify the data
+
     FOBOZO.Functions.AddInteraction(npc, npcPed)
 end)
+
 
 -- // HARDCODED, RECOMMENDED TO MAKE YOUR OWN SYSTEM \\ --
 
