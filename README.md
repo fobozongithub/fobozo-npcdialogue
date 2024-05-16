@@ -82,32 +82,43 @@ end)
 
 ```lua
 exports['fobozo-npcdialogue']:createDialoguePed(
-    "csb_burgerdrug", -- // [Ped model] \\ --
-    "Abu Salman", -- // [Ped name] \\ --
-    "Burger Shot Employee", -- // [Job title] \\ --
-    "police", -- // [Job requirement (optional, leave empty if none)] \\ --
-    -1173.4746, -882.8961, 13.0092, 32.2758, -- // [Coordinates (x, y, z, w)] \\ --
-    "Hello, do you want to start or end your shift?", -- // [Text] \\ --
-    "ox_target", -- // [Interaction type ('ox_target' or 'interact')] \\ --
-    { -- // [Options] \\ --
+    'csb_burgerdrug',
+    'Custom NPC',
+    'Custom Job',
+    'police',
+    -1175.9968, -878.6601, 13.0109, 67.6690,
+    'Hello, do you want to start or end your shift?', 
+    {
+        ox_target = { icon = 'fas fa-comments', distance = 2.5 },
+        default = { distance = 7.5, interactDst = 2.5 }
+    },
+    {
         {
             label = "Sign In/Out",
-            event = "fobozo:print", 
-            type = "client", 
-            args = {'clock'} 
+            action = "signInOut",
+            repRequired = 0
         },
         {
             label = "Change Clothes",
-            event = "fobozo:print", 
-            type = "client", 
-            args = {'uniform'} 
+            action = "changeClothes",
+            repRequired = 50
         },
         {
             label = "Exit",
-            event = "fobozo:print", 
-            type = "client", 
-            args = {} 
+            action = "exit",
+            repRequired = 0
         }
+    },
+    {
+        signInOut = function()
+            print('Custom Sign In/Out action triggered.')
+        end,
+        changeClothes = function()
+            print('Custom Change Clothes action triggered.')
+        end,
+        exit = function()
+            print('Custom Exit action triggered.')
+        end
     }
 )
 ```
