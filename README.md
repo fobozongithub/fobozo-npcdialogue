@@ -75,9 +75,9 @@ exports['fobozo-npcdialogue']:removeReputation(playerId, pedModel, amount)
 ```
 
 ```lua
-    exports['fobozo-npcdialogue']:getReputation(playerId, pedModel, function(reputation)
-        callback(reputation)
-    end)
+exports['fobozo-npcdialogue']:getReputation(playerId, pedModel, function(reputation)
+    callback(reputation)
+end)
 ```
 
 ```lua
