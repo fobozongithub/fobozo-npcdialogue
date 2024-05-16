@@ -3,7 +3,7 @@ game "gta5"
 
 name "fobozo-npcdialogue"
 author "@fobozo"
-version "1.7.0"
+version "1.8.0"
 
 ui_page "src/ui/index.html"
 files { "src/ui/**/**" }
