@@ -7,23 +7,14 @@ Shared.ReputationCommand = 'setReputation'
 -- // [NPC Configuration] \\ --
 Shared.DialoguePeds = {
     {
-        -- // [NPC Identification] \\ --
         name = "Abu Salman",
         ped = "csb_burgerdrug",
-        
-        -- // [Job settings] \\ --
         job = {
             title = "Burger Shot Employee",
             required = "" -- No job requirement
         },
-        
-        -- // [NPC Location] \\ --
         coords = vector4(-1173.4746, -882.8961, 13.0092, 32.2758),
-        
-        -- // [Interaction text] \\ --
         text = "Hello, do you want to start or end your shift?",
-        
-        -- // [Interaction settings] \\ --
         interaction = {
             ox_target = {
                 icon = 'fas fa-comments',
@@ -34,47 +25,39 @@ Shared.DialoguePeds = {
                 interactDst = 2.5
             }
         },
-        
-        -- // [Options available for interaction] \\ --
         options = {
             {
                 label = "Sign In/Out",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {'clock'} 
+                args = {'clock'},
+                repRequired = 0 -- No reputation requirement
             },
             {
                 label = "Change Clothes",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {'uniform'} 
+                args = {'uniform'},
+                repRequired = 50 -- 50 rep requirement
             },
             {
-                label = "Leave Conversation",
+                label = "Exit",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {} 
+                args = {},
+                repRequired = 0 -- No reputation requirement
             }
         }
     },
     {
-        -- // [NPC Identification] \\ --
         name = "Officer John",
         ped = "s_m_y_cop_01",
-        
-        -- // [Job settings] \\ --
         job = {
             title = "LSPD Officer",
             required = "police" -- Required job is police
         },
-        
-        -- // [NPC Location] \\ --
         coords = vector4(-1172.7806, -885.5114, 12.9868, 293.5538),
-       
-        -- // [Interaction text] \\ --
         text = "Hello, Officer. Do you want to start or end your shift?",
-        
-        -- // [Interaction settings] \\ --
         interaction = {
             ox_target = {
                 icon = 'fas fa-comments',
@@ -85,30 +68,32 @@ Shared.DialoguePeds = {
                 interactDst = 2.5
             }
         },
-        
-        -- // [Options available for interaction] \\ --
         options = {
             {
                 label = "Sign In/Out",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {'clock'} 
+                args = {'clock'},
+                repRequired = 0 -- No reputation requirement
             },
             {
                 label = "Change Clothes",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {'uniform'} 
+                args = {'uniform'},
+                repRequired = 50 -- 50 rep requirement
             },
             {
-                label = "Leave Conversation",
+                label = "Exit",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {} 
+                args = {},
+                repRequired = 0 -- No reputation requirement
             }
         }
     },
 }
+
 
 -- // [HOW TO USE EXPORT] \\ --
 
@@ -134,7 +119,7 @@ Shared.DialoguePeds = {
 --             args = {'uniform'} 
 --         },
 --         {
---             label = "Leave Conversation",
+--             label = "Exit",
 --             event = "fobozo:print", 
 --             type = "client", 
 --             args = {} 

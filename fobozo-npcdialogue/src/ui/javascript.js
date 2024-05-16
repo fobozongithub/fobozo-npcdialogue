@@ -18,33 +18,39 @@ function updateButtons(options) {
         return;
     }
 
+    const playerRep = parseInt(document.querySelector('.rep-text').innerText.split(' ')[0]);
+    let visibleOptions = 0;
+
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
-        const button = document.createElement('button');
-        button.className = 'action-button';
-        button.innerHTML = `<span>${i + 1}</span> ${option.label}`;
-        button.onclick = function () {
-            $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:process`, JSON.stringify({
-                event: option.event,
-                args: option.args,
-                type: option.type
-            }));
-            var accept = new Audio('accept.mp3');
-            accept.volume = 0.4;
-            accept.play();
+        if (playerRep >= option.repRequired) {
+            visibleOptions++;
+            const button = document.createElement('button');
+            button.className = 'action-button';
+            button.innerHTML = `<span>${visibleOptions}</span> ${option.label}`;
+            button.onclick = function () {
+                $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:process`, JSON.stringify({
+                    event: option.event,
+                    args: option.args,
+                    type: option.type
+                }));
+                var accept = new Audio('accept.mp3');
+                accept.volume = 0.4;
+                accept.play();
 
-            var body = document.body;
-            body.style.animation = 'slideOutFadeOut 0.5s ease forwards';
-            $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:hideMenu`);
-            setTimeout(function () {
-                body.style.display = 'none';
-                body.style.animation = '';
-            }, 500);
-        };
-        buttonGroup.appendChild(button);
+                var body = document.body;
+                body.style.animation = 'slideOutFadeOut 0.5s ease forwards';
+                $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:hideMenu`);
+                setTimeout(function () {
+                    body.style.display = 'none';
+                    body.style.animation = '';
+                }, 500);
+            };
+            buttonGroup.appendChild(button);
+        }
     }
 
-    if (options.length % 2 !== 0) {
+    if (visibleOptions % 2 !== 0) {
         buttonGroup.lastChild.style.gridColumn = "1 / span 2";
     }
 }
@@ -53,6 +59,7 @@ function hideButtons() {
     const buttonGroup = document.getElementById('button-group');
     buttonGroup.innerHTML = '';
 }
+
 
 window.addEventListener('message', function (event) {
     const body = document.body;

@@ -1,5 +1,18 @@
 local FOBOZO = { Functions = {} }
 local playerReputation = 0
+local ESX, QBCore
+
+if GetResourceState('es_extended') == 'started' then
+    ESX = exports['es_extended']:getSharedObject()
+    while not ESX do
+        Citizen.Wait(100)
+    end
+elseif GetResourceState('qb-core') == 'started' then
+    QBCore = exports['qb-core']:GetCoreObject()
+    while not QBCore do
+        Citizen.Wait(100)
+    end
+end
 
 FOBOZO.Functions.GetOffsetFromCoordsAndHeading = function(coords, heading, offsetX, offsetY, offsetZ)
     local headingRad = math.rad(heading)
@@ -35,17 +48,9 @@ end
 FOBOZO.Functions.GetPlayerJob = function()
     local playerJob = nil
 
-    if GetResourceState('es_extended') == 'started' then
-        local ESX = exports['es_extended']:getSharedObject()
-        while not ESX do
-            Citizen.Wait(100)
-        end
+    if ESX then
         playerJob = ESX.GetPlayerData().job.name
-    elseif GetResourceState('qb-core') == 'started' then
-        local QBCore = exports['qb-core']:GetCoreObject()
-        while not QBCore do
-            Citizen.Wait(100)
-        end
+    elseif QBCore then
         local Player = QBCore.Functions.GetPlayerData()
         playerJob = Player.job.name
     end
@@ -64,7 +69,8 @@ FOBOZO.Functions.AddInteraction = function(npc, npcPed)
                 onSelect = function()
                     local playerJob = FOBOZO.Functions.GetPlayerJob()
                     if npc.job.required == "" or playerJob == npc.job.required then
-                        TriggerEvent("fobozo-npcdialogue:showMenu", npc, playerReputation)
+                        TriggerServerEvent("fobozo-npcdialogue:initializeRep", npc.ped)
+                        TriggerEvent("fobozo-npcdialogue:showMenu", npc)
                         SetNuiFocus(true, true)
                     else
                         print("You cannot interact with this NPC.")
@@ -82,7 +88,8 @@ FOBOZO.Functions.AddInteraction = function(npc, npcPed)
                     action = function(entity)
                         local playerJob = FOBOZO.Functions.GetPlayerJob()
                         if npc.job.required == "" or playerJob == npc.job.required then
-                            TriggerEvent("fobozo-npcdialogue:showMenu", npc, playerReputation)
+                            TriggerServerEvent("fobozo-npcdialogue:initializeRep", npc.ped)
+                            TriggerEvent("fobozo-npcdialogue:showMenu", npc)
                             SetNuiFocus(true, true)
                         else
                             print("You cannot interact with this NPC.")
@@ -113,23 +120,56 @@ Citizen.CreateThread(function()
 end)
 
 RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
-    SendNUIMessage({
-        type = "dialog",
-        options = npc.options,
-        name = npc.name,
-        text = npc.text,
-        job = npc.job.title,
-        rep = playerReputation
-    })
-    FOBOZO.Functions.CamCreate(npc.coords)
+    if ESX then
+        ESX.TriggerServerCallback('fobozo-npcdialogue:getRep', function(rep)
+            playerReputation = rep
+            SendNUIMessage({
+                type = "dialog",
+                options = npc.options,
+                name = npc.name,
+                text = npc.text,
+                job = npc.job.title,
+                rep = playerReputation
+            })
+            FOBOZO.Functions.CamCreate(npc.coords)
+        end)
+    elseif QBCore then
+        QBCore.Functions.TriggerCallback('fobozo-npcdialogue:getRep', function(rep)
+            playerReputation = rep
+            SendNUIMessage({
+                type = "dialog",
+                options = npc.options,
+                name = npc.name,
+                text = npc.text,
+                job = npc.job.title,
+                rep = playerReputation
+            })
+            FOBOZO.Functions.CamCreate(npc.coords)
+        end)
+    end
 end)
 
-RegisterNetEvent('fobozo-npcdialogue:updateRep', function(newRep)
-    playerReputation = newRep
+RegisterNetEvent('fobozo-npcdialogue:setRep')
+AddEventHandler('fobozo-npcdialogue:setRep', function(rep)
+    playerReputation = rep
     SendNUIMessage({
         type = 'updateRep',
-        rep = newRep
+        rep = rep
     })
+end)
+
+RegisterNUICallback("fobozo-npcdialogue:getRep", function(data, cb)
+    if ESX then
+        ESX.TriggerServerCallback('fobozo-npcdialogue:getRep', function(rep)
+            playerReputation = rep
+            cb(rep)
+        end)
+    elseif QBCore then
+        QBCore.Functions.TriggerCallback('fobozo-npcdialogue:getRep', function(rep)
+            playerReputation = rep
+            cb(rep)
+        end)
+    end
 end)
 
 RegisterNUICallback("fobozo-npcdialogue:hideMenu", function()
