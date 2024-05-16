@@ -8,6 +8,9 @@ This script provides a dynamic NPC interaction system with configurable settings
 - Customizable NPC dialogues and commands
 - Smooth animations and transitions
 - Responsive design with adaptive styling for different screen sizes
+- Reputation management system with server-side callbacks and exports
+- Supports both ESX and QBCore frameworks
+- Easy to set up and extend with configurable NPC interaction settings
 
 ## Support
 
@@ -31,16 +34,29 @@ For any questions, feedback, or assistance with using the NPC Interaction System
     ```
 
 3. **Install Dependencies**
-    Make sure you have the required dependencies installed, such as [ox_target](https://github.com/overextended/ox_target), or [interact](https://github.com/darktrovx/interact).
+    Make sure you have the required dependencies installed, such as [oxmysql](https://github.com/overextended/oxmysql) and [ox_target](https://github.com/overextended/ox_target), or [interact](https://github.com/darktrovx/interact).
 
-4. **Add the Resource to Your Server**
+4. **Setup the Database**
+    Create the required table in your database by running the following SQL command:
+    ```sql
+    CREATE TABLE IF NOT EXISTS npc_reputation (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        identifier VARCHAR(50) NOT NULL,
+        ped_model VARCHAR(50) NOT NULL,
+        reputation INT DEFAULT 0,
+        UNIQUE (identifier, ped_model)
+    );
+    ```
+
+5. **Add the Resource to Your Server**
     Add the following line to your server configuration file (e.g., `server.cfg`):
     ```plaintext
     ensure fobozo-npcdialogue
     ```
 
-5. **Start Your Server**
+6. **Start Your Server**
     Restart your server or ensure the resource to apply the changes.
+
 
 ## Configuration
 
@@ -69,7 +85,7 @@ exports['fobozo-npcdialogue']:createDialoguePed(
             args = {'uniform'} 
         },
         {
-            label = "Leave Conversation",
+            label = "Exit",
             event = "fobozo:print", 
             type = "client", 
             args = {} 
@@ -91,23 +107,14 @@ Shared.ReputationCommand = 'setReputation'
 -- // [NPC Configuration] \\ --
 Shared.DialoguePeds = {
     {
-        -- // [NPC Identification] \\ --
         name = "Abu Salman",
         ped = "csb_burgerdrug",
-        
-        -- // [Job settings] \\ --
         job = {
             title = "Burger Shot Employee",
             required = "" -- No job requirement
         },
-        
-        -- // [NPC Location] \\ --
         coords = vector4(-1173.4746, -882.8961, 13.0092, 32.2758),
-        
-        -- // [Interaction text] \\ --
         text = "Hello, do you want to start or end your shift?",
-        
-        -- // [Interaction settings] \\ --
         interaction = {
             ox_target = {
                 icon = 'fas fa-comments',
@@ -118,47 +125,39 @@ Shared.DialoguePeds = {
                 interactDst = 2.5
             }
         },
-        
-        -- // [Options available for interaction] \\ --
         options = {
             {
                 label = "Sign In/Out",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {'clock'} 
+                args = {'clock'},
+                repRequired = 0 -- No reputation requirement
             },
             {
                 label = "Change Clothes",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {'uniform'} 
+                args = {'uniform'},
+                repRequired = 50 -- 50 rep requirement
             },
             {
-                label = "Leave Conversation",
+                label = "Exit",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {} 
+                args = {},
+                repRequired = 0 -- No reputation requirement
             }
         }
     },
     {
-        -- // [NPC Identification] \\ --
         name = "Officer John",
         ped = "s_m_y_cop_01",
-        
-        -- // [Job settings] \\ --
         job = {
             title = "LSPD Officer",
             required = "police" -- Required job is police
         },
-        
-        -- // [NPC Location] \\ --
         coords = vector4(-1172.7806, -885.5114, 12.9868, 293.5538),
-       
-        -- // [Interaction text] \\ --
         text = "Hello, Officer. Do you want to start or end your shift?",
-        
-        -- // [Interaction settings] \\ --
         interaction = {
             ox_target = {
                 icon = 'fas fa-comments',
@@ -169,26 +168,27 @@ Shared.DialoguePeds = {
                 interactDst = 2.5
             }
         },
-        
-        -- // [Options available for interaction] \\ --
         options = {
             {
                 label = "Sign In/Out",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {'clock'} 
+                args = {'clock'},
+                repRequired = 0 -- No reputation requirement
             },
             {
                 label = "Change Clothes",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {'uniform'} 
+                args = {'uniform'},
+                repRequired = 50 -- 50 rep requirement
             },
             {
-                label = "Leave Conversation",
+                label = "Exit",
                 event = "fobozo:print", 
                 type = "client", 
-                args = {} 
+                args = {},
+                repRequired = 0 -- No reputation requirement
             }
         }
     },
@@ -196,6 +196,7 @@ Shared.DialoguePeds = {
 ```
 
 ### Dependencies
+- [oxmysql](https://github.com/overextended/oxmysql)
 - [ox_target](https://github.com/overextended/ox_target) or [interact](https://github.com/darktrovx/interact)
 
 Ensure that you have these dependencies installed and configured properly for the NPC Interaction System to work seamlessly.
