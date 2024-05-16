@@ -162,12 +162,14 @@ html {
     transition: background 0.3s, color 0.3s;
     border: 1px solid rgba(0, 248, 186, 0.193);
     box-shadow: none;
-    padding-left: 50px;
+    padding-left: 60px;
 }
 
 .action-button span {
     position: absolute;
     left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     background: #1b453b;
     padding: 4px 8px;
     border-radius: 4px;
@@ -226,9 +228,12 @@ html {
     .action-button {
         padding: 12px;
         font-size: 24px;
+        padding-left: 70px; 
     }
 
     .action-button span {
         left: 10px;
+        padding: 6px 12px;
+        font-size: 20px;
     }
 }
