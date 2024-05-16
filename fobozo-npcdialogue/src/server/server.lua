@@ -1,3 +1,5 @@
+-- // [INITIALIZATION] \\ --
+
 local ESX, QBCore
 
 if GetResourceState('es_extended') == 'started' then
@@ -12,6 +14,8 @@ elseif GetResourceState('qb-core') == 'started' then
     end
 end
 
+-- // [UTILITY FUNCTIONS] \\ --
+
 local function debugLog(message)
     print(('[fobozo-npcdialogue] %s'):format(message))
 end
@@ -24,35 +28,6 @@ local function getPlayer(source)
     end
     return nil
 end
-
-RegisterServerEvent('fobozo-npcdialogue:initializeRep')
-AddEventHandler('fobozo-npcdialogue:initializeRep', function(pedModel)
-    local src = source
-    local player = getPlayer(src)
-    
-    if not player then
-        debugLog(('Player not found for source %s in initializeRep'):format(src))
-        return
-    end
-
-    local identifier = player.identifier or player.PlayerData.citizenid
-
-    MySQL.Async.fetchAll('SELECT reputation FROM npc_reputation WHERE identifier = @identifier AND ped_model = @ped_model', {
-        ['@identifier'] = identifier,
-        ['@ped_model'] = pedModel
-    }, function(result)
-        if #result == 0 then
-            MySQL.Async.execute('INSERT INTO npc_reputation (identifier, ped_model, reputation) VALUES (@identifier, @ped_model, @reputation)', {
-                ['@identifier'] = identifier,
-                ['@ped_model'] = pedModel,
-                ['@reputation'] = 0
-            })
-            TriggerClientEvent('fobozo-npcdialogue:setRep', src, 0)
-        else
-            TriggerClientEvent('fobozo-npcdialogue:setRep', src, result[1].reputation)
-        end
-    end)
-end)
 
 local function setReputation(identifier, pedModel, amount)
     MySQL.Async.execute('UPDATE npc_reputation SET reputation = @amount WHERE identifier = @identifier AND ped_model = @ped_model', {
@@ -103,6 +78,85 @@ local function getReputation(identifier, pedModel, cb)
         else
             cb(0)
         end
+    end)
+end
+
+-- // [EVENT HANDLERS] \\ --
+
+RegisterServerEvent('fobozo-npcdialogue:initializeRep')
+AddEventHandler('fobozo-npcdialogue:initializeRep', function(pedModel)
+    local src = source
+    local player = getPlayer(src)
+    
+    if not player then
+        debugLog(('Player not found for source %s in initializeRep'):format(src))
+        return
+    end
+
+    local identifier = player.identifier or player.PlayerData.citizenid
+
+    MySQL.Async.fetchAll('SELECT reputation FROM npc_reputation WHERE identifier = @identifier AND ped_model = @ped_model', {
+        ['@identifier'] = identifier,
+        ['@ped_model'] = pedModel
+    }, function(result)
+        if #result == 0 then
+            MySQL.Async.execute('INSERT INTO npc_reputation (identifier, ped_model, reputation) VALUES (@identifier, @ped_model, @reputation)', {
+                ['@identifier'] = identifier,
+                ['@ped_model'] = pedModel,
+                ['@reputation'] = 0
+            })
+            TriggerClientEvent('fobozo-npcdialogue:setRep', src, 0)
+        else
+            TriggerClientEvent('fobozo-npcdialogue:setRep', src, result[1].reputation)
+        end
+    end)
+end)
+
+if ESX then
+    ESX.RegisterServerCallback('fobozo-npcdialogue:getRep', function(source, cb, pedModel)
+        local player = getPlayer(source)
+        
+        if not player then
+            debugLog(('Player not found for source %s in getRep'):format(source))
+            cb(0)
+            return
+        end
+
+        local identifier = player.identifier
+
+        MySQL.Async.fetchAll('SELECT reputation FROM npc_reputation WHERE identifier = @identifier AND ped_model = @ped_model', {
+            ['@identifier'] = identifier,
+            ['@ped_model'] = pedModel
+        }, function(result)
+            if #result > 0 then
+                cb(result[1].reputation)
+            else
+                cb(0)
+            end
+        end)
+    end)
+elseif QBCore then
+    QBCore.Functions.CreateCallback('fobozo-npcdialogue:getRep', function(source, cb, pedModel)
+        local player = getPlayer(source)
+        
+        if not player then
+            debugLog(('Player not found for source %s in getRep'):format(source))
+            cb(0)
+            return
+        end
+
+        local identifier = player.PlayerData.citizenid
+
+        MySQL.Async.fetchAll('SELECT reputation FROM npc_reputation WHERE identifier = @identifier AND ped_model = @ped_model', {
+            ['@identifier'] = identifier,
+            ['@ped_model'] = pedModel
+        }, function(result)
+            if #result > 0 then
+                cb(result[1].reputation)
+            else
+                cb(0)
+            end
+        end)
     end)
 end
 
@@ -160,49 +214,3 @@ exports('getReputation', function(source, pedModel, cb)
     local identifier = player.identifier or player.PlayerData.citizenid
     getReputation(identifier, pedModel, cb)
 end)
-
-if ESX then
-    ESX.RegisterServerCallback('fobozo-npcdialogue:getRep', function(source, cb)
-        local player = getPlayer(source)
-        
-        if not player then
-            debugLog(('Player not found for source %s in getRep'):format(source))
-            cb(0)
-            return
-        end
-
-        local identifier = player.identifier
-
-        MySQL.Async.fetchAll('SELECT reputation FROM npc_reputation WHERE identifier = @identifier', {
-            ['@identifier'] = identifier
-        }, function(result)
-            if #result > 0 then
-                cb(result[1].reputation)
-            else
-                cb(0)
-            end
-        end)
-    end)
-elseif QBCore then
-    QBCore.Functions.CreateCallback('fobozo-npcdialogue:getRep', function(source, cb)
-        local player = getPlayer(source)
-        
-        if not player then
-            debugLog(('Player not found for source %s in getRep'):format(source))
-            cb(0)
-            return
-        end
-
-        local identifier = player.PlayerData.citizenid
-
-        MySQL.Async.fetchAll('SELECT reputation FROM npc_reputation WHERE identifier = @identifier', {
-            ['@identifier'] = identifier
-        }, function(result)
-            if #result > 0 then
-                cb(result[1].reputation)
-            else
-                cb(0)
-            end
-        end)
-    end)
-end

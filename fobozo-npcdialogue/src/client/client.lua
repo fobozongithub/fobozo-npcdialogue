@@ -2,6 +2,8 @@ local FOBOZO = { Functions = {} }
 local playerReputation = 0
 local ESX, QBCore
 
+-- // [INITIALIZATION] \\ --
+
 if GetResourceState('es_extended') == 'started' then
     ESX = exports['es_extended']:getSharedObject()
     while not ESX do
@@ -14,19 +16,15 @@ elseif GetResourceState('qb-core') == 'started' then
     end
 end
 
+-- // [FUNCTIONS] \\ --
+
 FOBOZO.Functions.GetOffsetFromCoordsAndHeading = function(coords, heading, offsetX, offsetY, offsetZ)
     local headingRad = math.rad(heading)
     local x = offsetX * math.cos(headingRad) - offsetY * math.sin(headingRad)
     local y = offsetX * math.sin(headingRad) + offsetY * math.cos(headingRad)
     local z = offsetZ
 
-    local worldCoords = vector4(
-        coords.x + x,
-        coords.y + y,
-        coords.z + z,
-        heading
-    )
-    
+    local worldCoords = vector4(coords.x + x, coords.y + y, coords.z + z, heading)
     return worldCoords
 end
 
@@ -103,6 +101,8 @@ FOBOZO.Functions.AddInteraction = function(npc, npcPed)
     end
 end
 
+-- // [THREADS] \\ --
+
 Citizen.CreateThread(function()
     for _, npc in ipairs(Shared.DialoguePeds) do
         RequestModel(GetHashKey(npc.ped))
@@ -119,7 +119,10 @@ Citizen.CreateThread(function()
     end
 end)
 
+-- // [EVENT HANDLERS] \\ --
+
 RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
+    local pedModel = npc.ped
     if ESX then
         ESX.TriggerServerCallback('fobozo-npcdialogue:getRep', function(rep)
             playerReputation = rep
@@ -132,7 +135,7 @@ RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
                 rep = playerReputation
             })
             FOBOZO.Functions.CamCreate(npc.coords)
-        end)
+        end, pedModel)
     elseif QBCore then
         QBCore.Functions.TriggerCallback('fobozo-npcdialogue:getRep', function(rep)
             playerReputation = rep
@@ -145,7 +148,7 @@ RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
                 rep = playerReputation
             })
             FOBOZO.Functions.CamCreate(npc.coords)
-        end)
+        end, pedModel)
     end
 end)
 
@@ -158,17 +161,20 @@ AddEventHandler('fobozo-npcdialogue:setRep', function(rep)
     })
 end)
 
+-- // [NUI CALLBACKS] \\ --
+
 RegisterNUICallback("fobozo-npcdialogue:getRep", function(data, cb)
+    local pedModel = data.pedModel
     if ESX then
         ESX.TriggerServerCallback('fobozo-npcdialogue:getRep', function(rep)
             playerReputation = rep
             cb(rep)
-        end)
+        end, pedModel)
     elseif QBCore then
         QBCore.Functions.TriggerCallback('fobozo-npcdialogue:getRep', function(rep)
             playerReputation = rep
             cb(rep)
-        end)
+        end, pedModel)
     end
 end)
 
@@ -177,16 +183,16 @@ RegisterNUICallback("fobozo-npcdialogue:hideMenu", function()
     FOBOZO.Functions.DestroyCamera()
 end)
 
-RegisterNUICallback("fobozo-npcdialogue:process", function(data)
+RegisterNUICallback("fobozo-npcdialogue:process", function(data, cb)
     SetNuiFocus(false, false)
-    if data.type == 'client' then
-        TriggerEvent(data.event, table.unpack(data.args))
-    elseif data.type == 'server' then
-        TriggerServerEvent(data.event, table.unpack(data.args))
-    elseif data.type == 'command' then
-        ExecuteCommand(data.event)
+    local actionName = data.action
+    if Shared.Actions[actionName] then
+        Shared.Actions[actionName]()
+    else
+        print('Action could not be found: ' .. tostring(actionName))
     end
     FOBOZO.Functions.DestroyCamera()
+    cb('ok')
 end)
 
 -- // [EXPORTS] \\ --
@@ -215,14 +221,5 @@ exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, 
     SetEntityInvincible(npcPed, true)
     SetBlockingOfNonTemporaryEvents(npcPed, true)
 
-    print(json.encode(npc)) -- Debug print to verify the data
-
     FOBOZO.Functions.AddInteraction(npc, npcPed)
-end)
-
-
--- // HARDCODED, RECOMMENDED TO MAKE YOUR OWN SYSTEM \\ --
-
-RegisterNetEvent('fobozo:print', function()
-    print('test event')
 end)

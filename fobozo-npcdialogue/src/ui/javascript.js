@@ -18,14 +18,11 @@ function updateButtons(options) {
         return;
     }
 
-    console.log("Options to display:", options); // Debug print
-
     const playerRep = parseInt(document.querySelector('.rep-text').innerText.split(' ')[0]);
     let visibleOptions = 0;
 
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
-        console.log("Processing option:", option); // Debug print
         if (playerRep >= (option.repRequired || 0)) {
             visibleOptions++;
             const button = document.createElement('button');
@@ -33,9 +30,8 @@ function updateButtons(options) {
             button.innerHTML = `<span>${visibleOptions}</span> ${option.label}`;
             button.onclick = function () {
                 $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:process`, JSON.stringify({
-                    event: option.event,
-                    args: option.args,
-                    type: option.type
+                    action: option.action,
+                    pedModel: option.pedModel
                 }));
                 var accept = new Audio('accept.mp3');
                 accept.volume = 0.4;
@@ -58,6 +54,7 @@ function updateButtons(options) {
     }
 }
 
+
 function hideButtons() {
     const buttonGroup = document.getElementById('button-group');
     buttonGroup.innerHTML = '';
@@ -66,8 +63,6 @@ function hideButtons() {
 window.addEventListener('message', function (event) {
     const body = document.body;
     if (event.data.type === 'dialog') {
-        console.log("Dialog Data Received:", event.data); // Debug print
-
         updateButtons(event.data.options);
         const nameElement = document.getElementById("npc-name");
         nameElement.innerHTML = `<b>${event.data.name.split(' ')[0]}</b> ${event.data.name.split(' ')[1]}`;
