@@ -1,5 +1,5 @@
 
-# NPC Interaction System
+# NPC Interaction System Inspired by Nopixel 4.0 (Loved the design, so tried it out)
 
 The Dialogue System is a comprehensive and customizable script designed for roleplaying servers utilizing the ESX or QBCore frameworks. This system allows server administrators to create immersive and interactive NPC dialogues with configurable interactions, reputation management, and job requirements. The script supports smooth animations, responsive design, and a seamless integration with popular interaction systems like ox_target and interact.
 
