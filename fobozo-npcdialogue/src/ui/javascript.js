@@ -23,7 +23,7 @@ function updateButtons(options, pedModel) {
 
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
-        if (playerRep >= (option.repRequired || 0)) {
+        if (playerRep >= (option.minRep || 0) && playerRep <= (option.maxRep || 100)) {
             visibleOptions++;
             const button = document.createElement('button');
             button.className = 'action-button';
@@ -33,11 +33,10 @@ function updateButtons(options, pedModel) {
                     $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:process`, JSON.stringify({
                         pedModel: pedModel,
                         optionLabel: option.label
-                    }));
+                    }), function(response) {
+                        handleOptionResponse(response, pedModel);
+                    });
                     button.classList.add('disabled');
-                    if (option.disableAfterUpdate) {
-                        button.classList.add('disabled');
-                    }
                     var accept = new Audio('accept.mp3');
                     accept.volume = 0.4;
                     accept.play();
@@ -49,6 +48,25 @@ function updateButtons(options, pedModel) {
 
     if (visibleOptions % 2 !== 0) {
         buttonGroup.lastChild.style.gridColumn = "1 / span 2";
+    }
+}
+
+function handleOptionResponse(response, pedModel) {
+    if (response.showNewButtons) {
+        updateButtons(response.newButtons, pedModel);
+    } else {
+        hideButtons();
+    }
+
+    if (response.updateText) {
+        const existingTextElement = document.querySelector(".dialogue-content:last-child");
+        if (existingTextElement && existingTextElement.innerText.trim() === response.updateText.trim()) {
+            return;
+        }
+        const newTextElement = document.createElement("div");
+        newTextElement.className = "dialogue-content";
+        newTextElement.innerHTML = `<div class="triangle-element"></div>${response.updateText}`;
+        document.querySelector(".header-section").appendChild(newTextElement);
     }
 }
 

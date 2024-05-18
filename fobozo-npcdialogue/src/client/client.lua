@@ -126,9 +126,19 @@ RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
     
     local callback = function(rep)
         playerReputation = rep
+        local options = {}
+        
+        for _, option in ipairs(npc.options) do
+            table.insert(options, {
+                label = option.label,
+                minRep = option.minRep,
+                maxRep = option.maxRep
+            })
+        end
+        
         SendNUIMessage({
             type = "dialog",
-            options = npc.options,
+            options = options,
             name = npc.name,
             text = npc.text,
             job = npc.job.title,
@@ -178,19 +188,24 @@ end)
 
 RegisterNUICallback("fobozo-npcdialogue:process", function(data, cb)
     local shouldCloseMenu = true
+    local response = {}
 
     for _, npc in ipairs(Shared.DialoguePeds) do
         if npc.ped == data.pedModel then
             for _, option in ipairs(npc.options) do
                 if option.label == data.optionLabel then
                     if option.onSelect then
-                        local result = option.onSelect()
-                        if result and result.updateText then
-                            shouldCloseMenu = false
-                            SendNUIMessage({
-                                type = 'appendText',
-                                text = result.updateText
-                            })
+                        local result = option.onSelect(playerReputation)
+                        if result then
+                            if result.updateText then
+                                shouldCloseMenu = false
+                                response.updateText = result.updateText
+                            end
+                            if result.showNewButtons then
+                                shouldCloseMenu = false
+                                response.showNewButtons = true
+                                response.newButtons = result.newButtons
+                            end
                             SendNUIMessage({
                                 type = 'disableButton',
                                 label = data.optionLabel
@@ -205,13 +220,12 @@ RegisterNUICallback("fobozo-npcdialogue:process", function(data, cb)
     if shouldCloseMenu then
         FOBOZO.Functions.DestroyCamera()
         SetNuiFocus(false, false)
-        local body = GetScreenResolution()
         SendNUIMessage({
             type = 'hide'
         })
     end
 
-    cb('ok')
+    cb(response)
 end)
 
 -- // [EXPORTS] \\ --
