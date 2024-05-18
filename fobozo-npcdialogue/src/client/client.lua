@@ -123,7 +123,6 @@ end)
 
 RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
     local pedModel = npc.ped
-    local npcActions = npc.actions or Shared.Actions -- Use custom actions if provided, otherwise fall back to Shared.Actions
     
     local callback = function(rep)
         playerReputation = rep
@@ -133,7 +132,8 @@ RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
             name = npc.name,
             text = npc.text,
             job = npc.job.title,
-            rep = playerReputation
+            rep = playerReputation,
+            pedModel = pedModel
         })
         FOBOZO.Functions.CamCreate(npc.coords)
     end
@@ -144,7 +144,6 @@ RegisterNetEvent("fobozo-npcdialogue:showMenu", function(npc)
         QBCore.Functions.TriggerCallback('fobozo-npcdialogue:getRep', callback, pedModel)
     end
 end)
-
 
 RegisterNetEvent('fobozo-npcdialogue:setRep')
 AddEventHandler('fobozo-npcdialogue:setRep', function(rep)
@@ -178,20 +177,46 @@ RegisterNUICallback("fobozo-npcdialogue:hideMenu", function()
 end)
 
 RegisterNUICallback("fobozo-npcdialogue:process", function(data, cb)
-    SetNuiFocus(false, false)
-    local actionName = data.action
-    if Shared.Actions[actionName] then
-        Shared.Actions[actionName]()
-    else
-        print('Action could not be found: ' .. tostring(actionName))
+    local shouldCloseMenu = true
+
+    for _, npc in ipairs(Shared.DialoguePeds) do
+        if npc.ped == data.pedModel then
+            for _, option in ipairs(npc.options) do
+                if option.label == data.optionLabel then
+                    if option.onSelect then
+                        local result = option.onSelect()
+                        if result and result.updateText then
+                            shouldCloseMenu = false
+                            SendNUIMessage({
+                                type = 'appendText',
+                                text = result.updateText
+                            })
+                            SendNUIMessage({
+                                type = 'disableButton',
+                                label = data.optionLabel
+                            })
+                        end
+                    end
+                end
+            end
+        end
     end
-    FOBOZO.Functions.DestroyCamera()
+
+    if shouldCloseMenu then
+        FOBOZO.Functions.DestroyCamera()
+        SetNuiFocus(false, false)
+        local body = GetScreenResolution()
+        SendNUIMessage({
+            type = 'hide'
+        })
+    end
+
     cb('ok')
 end)
 
 -- // [EXPORTS] \\ --
 
-exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, x, y, z, w, text, interaction, options, customActions)
+exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, x, y, z, w, text, interaction, options)
     local npc = {
         name = pedName,
         ped = pedModel,
@@ -202,9 +227,10 @@ exports('createDialoguePed', function(pedModel, pedName, jobTitle, jobRequired, 
         coords = vector4(x, y, z, w),
         text = text,
         interaction = interaction,
-        options = options,
-        actions = customActions
+        options = options
     }
+
+    table.insert(Shared.DialoguePeds, npc)
 
     RequestModel(GetHashKey(npc.ped))
     while not HasModelLoaded(GetHashKey(npc.ped)) do

@@ -9,7 +9,7 @@ window.onload = function () {
     }
 };
 
-function updateButtons(options) {
+function updateButtons(options, pedModel) {
     const buttonGroup = document.getElementById('button-group');
     buttonGroup.innerHTML = '';
 
@@ -29,21 +29,19 @@ function updateButtons(options) {
             button.className = 'action-button';
             button.innerHTML = `<span>${visibleOptions}</span> ${option.label}`;
             button.onclick = function () {
-                $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:process`, JSON.stringify({
-                    action: option.action,
-                    pedModel: option.pedModel
-                }));
-                var accept = new Audio('accept.mp3');
-                accept.volume = 0.4;
-                accept.play();
-
-                var body = document.body;
-                body.style.animation = 'slideOutFadeOut 0.5s ease forwards';
-                $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:hideMenu`);
-                setTimeout(function () {
-                    body.style.display = 'none';
-                    body.style.animation = '';
-                }, 500);
+                if (!button.classList.contains('disabled')) {
+                    $.post(`https://fobozo-npcdialogue/fobozo-npcdialogue:process`, JSON.stringify({
+                        pedModel: pedModel,
+                        optionLabel: option.label
+                    }));
+                    button.classList.add('disabled');
+                    if (option.disableAfterUpdate) {
+                        button.classList.add('disabled');
+                    }
+                    var accept = new Audio('accept.mp3');
+                    accept.volume = 0.4;
+                    accept.play();
+                }
             };
             buttonGroup.appendChild(button);
         }
@@ -54,7 +52,6 @@ function updateButtons(options) {
     }
 }
 
-
 function hideButtons() {
     const buttonGroup = document.getElementById('button-group');
     buttonGroup.innerHTML = '';
@@ -63,19 +60,22 @@ function hideButtons() {
 window.addEventListener('message', function (event) {
     const body = document.body;
     if (event.data.type === 'dialog') {
-        updateButtons(event.data.options);
-        const nameElement = document.getElementById("npc-name");
-        nameElement.innerHTML = `<b>${event.data.name.split(' ')[0]}</b> ${event.data.name.split(' ')[1]}`;
-        const innerTitleElement = document.querySelector(".content-wrapper .dialogue-title");
-        innerTitleElement.innerText = event.data.name;
-
-        const textElement = document.getElementById("npc-text");
-        textElement.innerHTML = `<div class="triangle-element"></div>${event.data.text}`;
-        const jobElement = document.getElementById("npc-job");
-        jobElement.innerText = event.data.job;
-        const repElement = document.getElementById("npc-rep");
-        repElement.innerText = `${event.data.rep} REP`;
-
+        document.querySelector('.header-section').innerHTML = `
+            <div class="dialogue-title" id="npc-name">${event.data.name}</div>
+            <div class="rep-wrapper">
+                <p class="rep-text" id="npc-rep">${event.data.rep} REP</p>
+            </div>
+            <div class="content-wrapper">
+                <div class="dialogue-title" id="npc-inner-title">${event.data.name}</div>
+                <div class="position-wrapper">
+                    <p class="position-text" id="npc-job">${event.data.job}</p>
+                </div>
+            </div>
+            <div class="dialogue-content" id="npc-text">
+                <div class="triangle-element"></div>${event.data.text}
+            </div>
+        `;
+        updateButtons(event.data.options, event.data.pedModel);
         body.style.animation = 'slideInFadeIn 0.5s ease forwards';
         body.style.display = 'block';
 
@@ -87,6 +87,18 @@ window.addEventListener('message', function (event) {
     } else if (event.data.type === 'updateRep') {
         const repElement = document.querySelector('.rep-text');
         repElement.innerText = `${event.data.rep} REP`;
+    } else if (event.data.type === 'appendText') {
+        const newTextElement = document.createElement("div");
+        newTextElement.className = "dialogue-content";
+        newTextElement.innerHTML = `<div class="triangle-element"></div>${event.data.text}`;
+        document.querySelector(".header-section").appendChild(newTextElement);
+    } else if (event.data.type === 'disableButton') {
+        const buttons = document.querySelectorAll('.action-button');
+        buttons.forEach(button => {
+            if (button.textContent.includes(event.data.label)) {
+                button.classList.add('disabled');
+            }
+        });
     }
 });
 
@@ -121,11 +133,8 @@ document.addEventListener('keydown', function (event) {
 });
 
 function clickButton(buttonIndex) {
-    var accept = new Audio('accept.mp3');
-    accept.volume = 0.4;
-    accept.play();
     var button = document.querySelector(`.action-button:nth-child(${buttonIndex})`);
-    if (button && button.style.display !== 'none') {
+    if (button && button.style.display !== 'none' && !button.classList.contains('disabled')) {
         button.click();
     }
 }

@@ -115,17 +115,6 @@ html {
 }
 
 .dialogue-content {
-    background: rgba(31, 69, 91, 0.9);
-    padding: 20px;
-    border-radius: 3px;
-    margin-bottom: 20px;
-    font-size: 18px;
-    line-height: 1.8;
-    color: #e0e0e0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-#npc-text {
     background: radial-gradient(111.65% 77.01% at 49.73% 50.27%, hsla(0, 0%, 100%, 0.19) 0%, hsla(0, 0%, 100%, 0) 100%);
     padding: 20px; 
     border-radius: 3px;
@@ -133,7 +122,8 @@ html {
     line-height: 1.5; 
     color: #ffffff; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    text-shadow: 0 .37037vh 2.59259vh rgba(0, 248, 185, .55)
+    text-shadow: 0 .37037vh 2.59259vh rgba(0, 248, 185, .55);
+    margin-bottom: 10px;
 }
 
 .button-group {
@@ -181,6 +171,13 @@ html {
 .action-button:hover {
     color: #ffffff;
     background: linear-gradient(to top, #2c5f54, #306b63);
+}
+
+.action-button.disabled {
+    background: linear-gradient(to top, #1e3e34, #23433e);
+    color: #a1a1a1;
+    cursor: not-allowed;
+    border: 1px solid rgba(0, 248, 186, 0.1);
 }
 
 .action-button:hover span {
