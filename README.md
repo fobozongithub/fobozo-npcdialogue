@@ -94,28 +94,47 @@ exports['fobozo-npcdialogue']:createDialoguePed(
     },
     {
         {
-            label = "Sign In/Out",
-            onSelect = function()
-                print('test')
-                return { updateText = "You have signed in/out." }
+            label = "Start Working",
+            onSelect = function(rep)
+                local text
+                if rep < 50 then
+                    text = "Looks like you're new to the place."
+                else
+                    text = "Welcome back, my man. Ready to work?"
+                end
+                return {
+                    updateText = text,
+                    showNewButtons = true,
+                    newButtons = {
+                        {
+                            label = "Sign In/Out",
+                            onSelect = function()
+                                return {}
+                            end,
+                            minRep = 0,
+                            maxRep = 100
+                        },
+                        {
+                            label = "Change Clothes",
+                            onSelect = function()
+                                return {}
+                            end,
+                            minRep = 50,
+                            maxRep = 100
+                        }
+                    }
+                }
             end,
-            repRequired = 0
-        },
-        {
-            label = "Change Clothes",
-            onSelect = function()
-                print('test')
-                return { updateText = "You have changed your clothes." }
-            end,
-            repRequired = 50
+            minRep = 0,
+            maxRep = 100
         },
         {
             label = "Exit",
             onSelect = function()
-                print('test')
                 return {}
             end,
-            repRequired = 0
+            minRep = 0,
+            maxRep = 100
         }
     }
 )
@@ -153,84 +172,53 @@ Shared.DialoguePeds = {
         },
         options = { -- Options available in the dialogue menu
             {
-                label = "Sign In/Out", -- Label shown to the player
-                onSelect = function()
-                    -- Function executed when this option is selected
-                    print('Selected Sign In/Out')
-                    return { updateText = "You have signed in/out." }
+                label = "Start Working",
+                onSelect = function(rep)
+                    local text
+                    if rep < 50 then
+                        text = "Looks like you're new to the place."
+                    else
+                        text = "Welcome back, my man. Ready to work?"
+                    end
+                    return {
+                        updateText = text,
+                        showNewButtons = true,
+                        newButtons = {
+                            {
+                                label = "Sign In/Out",
+                                onSelect = function()
+                                    return {}
+                                end,
+                                minRep = 0,
+                                maxRep = 100
+                            },
+                            {
+                                label = "Change Clothes",
+                                onSelect = function()
+                                    return {}
+                                end,
+                                minRep = 50,
+                                maxRep = 100
+                            }
+                        }
+                    }
                 end,
-                repRequired = 0 -- Reputation required to perform the action
+                minRep = 0,
+                maxRep = 100
             },
             {
-                label = "Change Clothes", -- Label shown to the player
+                label = "Exit",
                 onSelect = function()
-                    -- Function executed when this option is selected
-                    print('Selected Change Clothes')
-                    return { updateText = "You have changed your clothes." }
+                    return {}
                 end,
-                repRequired = 50 -- Reputation required to perform the action
-            },
-            {
-                label = "Exit", -- Label shown to the player
-                onSelect = function()
-                    -- Function executed when this option is selected
-                    print('Selected Exit')
-                    return {}  -- No updateText means the UI will close
-                end,
-                repRequired = 0 -- Reputation required to perform the action
+                minRep = 0,
+                maxRep = 100
             }
         }
     },
-    {
-        name = "Officer John", -- Name of the NPC
-        ped = "s_m_y_cop_01", -- Ped model
-        job = {
-            title = "LSPD Officer", -- Job title of the NPC
-            required = "police" -- Job requirement to interact with the NPC
-        },
-        coords = vector4(-1172.7806, -885.5114, 12.9868, 293.5538), -- Coordinates of the NPC
-        text = "Hello, Officer. Do you want to start or end your shift?", -- Dialogue text shown to the player
-        interaction = {
-            ox_target = { -- Settings for 'ox_target' interaction
-                icon = 'fas fa-comments', -- Icon shown in the interaction menu
-                distance = 2.5 -- Interaction distance
-            },
-            default = { -- Settings for default interaction
-                distance = 7.5, -- Max interaction distance
-                interactDst = 2.5 -- Interaction distance to trigger action
-            }
-        },
-        options = { -- Options available in the dialogue menu
-            {
-                label = "Sign In/Out", -- Label shown to the player
-                onSelect = function()
-                    -- Function executed when this option is selected
-                    print('Selected Sign In/Out')
-                    return { updateText = "You have signed in/out." }
-                end,
-                repRequired = 0 -- Reputation required to perform the action
-            },
-            {
-                label = "Change Clothes", -- Label shown to the player
-                onSelect = function()
-                    -- Function executed when this option is selected
-                    print('Selected Change Clothes')
-                    return { updateText = "You have changed your clothes." }
-                end,
-                repRequired = 50 -- Reputation required to perform the action
-            },
-            {
-                label = "Exit", -- Label shown to the player
-                onSelect = function()
-                    -- Function executed when this option is selected
-                    print('Selected Exit')
-                    return {}  -- No updateText means the UI will close
-                end,
-                repRequired = 0 -- Reputation required to perform the action
-            }
-        }
-    },
+    -- Additional NPC configurations...
 }
+
 ```
 
 ### Dependencies
