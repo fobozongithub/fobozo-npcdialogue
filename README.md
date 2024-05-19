@@ -16,7 +16,7 @@ The Dialogue System is a comprehensive and customizable script designed for role
 
 For any questions, feedback, or assistance with using the NPC Interaction System, you can join our Discord server:
 
-[![Discord](https://img.shields.io/discord/1131142366204530769?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/9wsVqqgCVz)
+[![Discord](https://img.shields.io/discord/1131142366204530769?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/b5kjPY2FM8)
 
 ## Preview
 ![NPC Interaction UI](https://media.discordapp.net/attachments/1239968782890434684/1240263972389785620/image.png?ex=6645ed56&is=66449bd6&hm=a6651fd47552bd14899c9640f743b16e5602fc45157785f84fcaebd670182af7&=&format=webp&quality=lossless&width=1387&height=662)
