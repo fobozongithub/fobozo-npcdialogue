@@ -19,7 +19,7 @@ For any questions, feedback, or assistance with using the NPC Interaction System
 [![Discord](https://img.shields.io/discord/1131142366204530769?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/b5kjPY2FM8)
 
 ## Preview
-![NPC Interaction UI](https://media.discordapp.net/attachments/1245669285272092684/1245669285779734539/fobozo-npcdialogue.png?ex=6675efad&is=66749e2d&hm=1bfdcb5957281a189030d660754daa5c78d9cfc2c79017c3abfdfab585bca8fb&=&format=webp&quality=lossless&width=885&height=497)
+![NPC Interaction UI](https://media.discordapp.net/attachments/1239968782890434684/1241327518317936661/image.png?ex=6675f617&is=6674a497&hm=c0f0070921dd7250ff4116d517fd7822b058fce7b9dc9103fc4be8b19ce2da18&=&format=webp&quality=lossless&width=597&height=497)
 
 ## Installation Guide
 
